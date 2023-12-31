@@ -18,12 +18,8 @@ pub struct Initialize<'info> {
     pub global_state: Account<'info, GlobalState>,
 
     #[account(
-        init_if_needed,
-        payer = authority,
-        seeds = [TREASURY_SEED, mint.key().as_ref()],
-        bump,
+        mut,
         token::mint = mint,
-        token::authority = global_state
     )]
     pub treasury: Account<'info, TokenAccount>,
 

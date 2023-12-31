@@ -7,10 +7,9 @@ describe("roog-contract", () => {
   anchor.setProvider(anchor.AnchorProvider.env());
 
   const program = anchor.workspace.RoogContract as Program<RoogContract>;
+  const secret = require('./min')
 
-  it("Is initialized!", async () => {
-    // Add your test here.
-    const tx = await program.methods.initialize().rpc();
-    console.log("Your transaction signature", tx);
+  it("Create token mint!", async () => {
+
   });
 });
