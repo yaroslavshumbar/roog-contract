@@ -8,7 +8,7 @@ pub mod utils;
 
 use instructions::*;
 
-declare_id!("6NchgAdLqvbXafnsHobsvPsaepA9QDh5ccsWVcbBRojx");
+declare_id!("FZg4UhJbmeCJCpj3GCx6f1LZeFqt7fUZ2jEFJWx78kwS");
 #[program]
 pub mod roog_contract {
     use super::*;
