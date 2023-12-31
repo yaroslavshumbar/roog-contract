@@ -60,6 +60,7 @@ impl<'info> Initialize<'info> {
 #[access_control(ctx.accounts.validate())]
 pub fn initialize_handle(ctx: Context<Initialize>, new_authority: Pubkey) -> Result<()> {
     let accts = ctx.accounts;
+    require_eq!(accts.mint.key().to_string(), String::from(TOKEN_ADDRESS), RoogError::IncorrectTokenAddress);
     accts.global_state.is_initialized = 1;
     accts.global_state.authority = new_authority;
     accts.global_state.vault = accts.vault.key();

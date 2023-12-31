@@ -10,7 +10,7 @@ use instructions::*;
 
 declare_id!("6NchgAdLqvbXafnsHobsvPsaepA9QDh5ccsWVcbBRojx");
 #[program]
-pub mod baked_beans {
+pub mod roog_contract {
     use super::*;
 
     pub fn initialize(ctx: Context<Initialize>, new_authority: Pubkey) -> Result<()> {

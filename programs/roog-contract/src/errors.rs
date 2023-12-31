@@ -17,4 +17,8 @@ pub enum RoogError {
     /// Incorrect Referral Pubkey
     #[msg("Incorrect Referral Pubkey")]
     IncorrectReferral,
+
+    /// Incorrect Token Address
+    #[msg("Incorrect Token Address")]
+    IncorrectTokenAddress,
 }

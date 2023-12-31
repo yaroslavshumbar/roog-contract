@@ -46,6 +46,7 @@ pub struct BuyRoogs<'info> {
 
 pub fn buy_roogs_handle(ctx: Context<BuyRoogs>, token_amount: u64) -> Result<()> {
     let accts = ctx.accounts;
+    require_eq!(accts.mint.key().to_string(), String::from(TOKEN_ADDRESS), RoogError::IncorrectTokenAddress);
 
     let cur_timestamp = Clock::get()?.unix_timestamp;
     if accts.user_state.is_initialized == 0 {
