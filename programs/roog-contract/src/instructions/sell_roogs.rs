@@ -52,7 +52,7 @@ pub fn sell_roogs_handle(ctx: Context<SellRoogs>) -> Result<()> {
     let cur_timestamp = Clock::get()?.unix_timestamp as u64;
     let accts = ctx.accounts;
     
-    require_eq!(accts.mint.key().to_string(), String::from(TOKEN_ADDRESS), RoogError::IncorrectTokenAddress);
+    require!(accts.mint.key().to_string() == String::from(TOKEN_ADDRESS), RoogError::IncorrectTokenAddress);
     msg!("SellRoogs claimed roogs {}", accts.user_state.claimed_roogs);
     let has_roogs = accts
         .user_state

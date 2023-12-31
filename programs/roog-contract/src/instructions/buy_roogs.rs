@@ -1,6 +1,6 @@
 use crate::{constants::*, errors::*, states::*, utils::*};
 use anchor_lang::prelude::*;
-use anchor_spl::token::{TokenAccount, Mint, Token, self};
+use anchor_spl::{token::{TokenAccount, Mint, Token, self}, associated_token::AssociatedToken};
 use std::mem::size_of;
 #[derive(Accounts)]
 pub struct BuyRoogs<'info> {
@@ -34,19 +34,20 @@ pub struct BuyRoogs<'info> {
 
     #[account(
         mut,
-        token::mint = mint,
-        token::authority = user
+        associated_token::mint = mint,
+        associated_token::authority = user
     )]
     pub account: Account<'info, TokenAccount>,
 
     pub token_program: Program<'info, Token>,
+    pub associated_token_program: Program<'info, AssociatedToken>,
     pub system_program: Program<'info, System>,
     pub rent: Sysvar<'info, Rent>,
 }
 
 pub fn buy_roogs_handle(ctx: Context<BuyRoogs>, token_amount: u64) -> Result<()> {
     let accts = ctx.accounts;
-    require_eq!(accts.mint.key().to_string(), String::from(TOKEN_ADDRESS), RoogError::IncorrectTokenAddress);
+    require!(accts.mint.key().to_string() == String::from(TOKEN_ADDRESS), RoogError::IncorrectTokenAddress);
 
     let cur_timestamp = Clock::get()?.unix_timestamp;
     if accts.user_state.is_initialized == 0 {
