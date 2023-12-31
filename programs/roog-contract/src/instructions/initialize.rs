@@ -69,11 +69,11 @@ pub fn initialize_handle(ctx: Context<Initialize>, new_authority: Pubkey) -> Res
     accts.global_state.vault = accts.vault.key();
     accts.global_state.treasury = accts.treasury.key();
 
-    accts.global_state.market_eggs = 108000000000;
+    accts.global_state.market_roogs = 108000000000;
     accts.global_state.dev_fee = 300; // means 3%
     accts.global_state.psn = 10000;
     accts.global_state.psnh = 5000;
-    accts.global_state.eggs_per_miner = 1080000;
+    accts.global_state.roogs_per_miner = 1080000;
 
     Ok(())
 }

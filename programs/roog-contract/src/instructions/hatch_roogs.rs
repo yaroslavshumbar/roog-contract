@@ -3,7 +3,7 @@ use anchor_lang::prelude::*;
 
 use std::mem::size_of;
 #[derive(Accounts)]
-pub struct HatchEggs<'info> {
+pub struct HatchRoogs<'info> {
     #[account(mut)]
     pub user: Signer<'info>,
 
@@ -41,7 +41,7 @@ pub struct HatchEggs<'info> {
     pub rent: Sysvar<'info, Rent>,
 }
 
-pub fn hatch_eggs_handle(ctx: Context<HatchEggs>) -> Result<()> {
+pub fn hatch_roogs_handle(ctx: Context<HatchRoogs>) -> Result<()> {
     let cur_timestamp = Clock::get()?.unix_timestamp as u64;
     if ctx.accounts.referral_state.is_initialized == 0 {
         ctx.accounts.referral_state.is_initialized = 1;
@@ -54,30 +54,30 @@ pub fn hatch_eggs_handle(ctx: Context<HatchEggs>) -> Result<()> {
         );
     }
     msg!(
-        "hatch ctx.accounts.user_state.claimed_eggs : {}",
-        ctx.accounts.user_state.claimed_eggs
+        "hatch ctx.accounts.user_state.claimed_roogs : {}",
+        ctx.accounts.user_state.claimed_roogs
     );
-    let eggs_used = ctx.accounts
+    let roogs_used = ctx.accounts
         .user_state
-        .claimed_eggs
-        .checked_add(get_eggs_since_last_hatch(
+        .claimed_roogs
+        .checked_add(get_roogs_since_last_hatch(
             &ctx.accounts.user_state,
             cur_timestamp,
-            ctx.accounts.global_state.eggs_per_miner,
+            ctx.accounts.global_state.roogs_per_miner,
         )?)
         .unwrap();
 
-    msg!("hatch eggs_used: {}", eggs_used);
+    msg!("hatch roogs_used: {}", roogs_used);
     msg!(
-        "hatch ctx.accounts.global_state.eggs_per_miner: {}",
-        ctx.accounts.global_state.eggs_per_miner
+        "hatch ctx.accounts.global_state.roogs_per_miner: {}",
+        ctx.accounts.global_state.roogs_per_miner
     );
-    let new_miners = eggs_used
-        .checked_div(ctx.accounts.global_state.eggs_per_miner)
+    let new_miners = roogs_used
+        .checked_div(ctx.accounts.global_state.roogs_per_miner)
         .unwrap();
     msg!("hatch new_miners: {}", new_miners);
     ctx.accounts.user_state.miners = ctx.accounts.user_state.miners.checked_add(new_miners).unwrap();
-    ctx.accounts.user_state.claimed_eggs = 0;
+    ctx.accounts.user_state.claimed_roogs = 0;
     ctx.accounts.user_state.last_hatch_time = cur_timestamp;
     msg!("user_state.miners = {}", ctx.accounts.user_state.miners);
     if ctx.accounts.referral.key().eq(&ctx.accounts.user.key()) {
@@ -94,17 +94,17 @@ pub fn hatch_eggs_handle(ctx: Context<HatchEggs>) -> Result<()> {
             ctx.accounts.user_state.referral.eq(&ctx.accounts.referral.key()),
             RoogError::IncorrectReferral
         );
-        ctx.accounts.referral_state.claimed_eggs = ctx.accounts
+        ctx.accounts.referral_state.claimed_roogs = ctx.accounts
             .referral_state
-            .claimed_eggs
-            .checked_add(eggs_used / 8)
+            .claimed_roogs
+            .checked_add(roogs_used / 8)
             .unwrap();
     }
 
-    ctx.accounts.global_state.market_eggs = ctx.accounts
+    ctx.accounts.global_state.market_roogs = ctx.accounts
         .global_state
-        .market_eggs
-        .checked_add(eggs_used / 5)
+        .market_roogs
+        .checked_add(roogs_used / 5)
         .unwrap();
 
     msg!("last user_state.miners = {}", ctx.accounts.user_state.miners);

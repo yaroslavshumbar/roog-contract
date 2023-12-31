@@ -3,7 +3,7 @@ use anchor_lang::prelude::*;
 use anchor_spl::token::{TokenAccount, Mint, Token, self};
 use std::mem::size_of;
 #[derive(Accounts)]
-pub struct BuyEggs<'info> {
+pub struct BuyRoogs<'info> {
     #[account(mut)]
     pub user: Signer<'info>,
 
@@ -44,7 +44,7 @@ pub struct BuyEggs<'info> {
     pub rent: Sysvar<'info, Rent>,
 }
 
-pub fn buy_eggs_handle(ctx: Context<BuyEggs>, token_amount: u64) -> Result<()> {
+pub fn buy_roogs_handle(ctx: Context<BuyRoogs>, token_amount: u64) -> Result<()> {
     let accts = ctx.accounts;
 
     let cur_timestamp = Clock::get()?.unix_timestamp;
@@ -59,7 +59,7 @@ pub fn buy_eggs_handle(ctx: Context<BuyEggs>, token_amount: u64) -> Result<()> {
         );
     }
 
-    let mut roogs_bought = calculate_eggs_buy(&accts.global_state, token_amount, accts.vault.amount)?;
+    let mut roogs_bought = calculate_roogs_buy(&accts.global_state, token_amount, accts.vault.amount)?;
 
     let roogs_bought_fee = dev_fee(&accts.global_state, roogs_bought)?;
     roogs_bought = roogs_bought.checked_sub(roogs_bought_fee).unwrap();
@@ -89,9 +89,9 @@ pub fn buy_eggs_handle(ctx: Context<BuyEggs>, token_amount: u64) -> Result<()> {
     );
     token::transfer(cpi_ctx, real_token)?;
 
-    accts.user_state.claimed_eggs = accts
+    accts.user_state.claimed_roogs = accts
         .user_state
-        .claimed_eggs
+        .claimed_roogs
         .checked_add(roogs_bought)
         .unwrap();
     

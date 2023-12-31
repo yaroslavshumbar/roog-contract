@@ -17,15 +17,15 @@ pub mod baked_beans {
         initialize_handle(ctx, new_authority)
     }
 
-    pub fn buy_eggs(ctx: Context<BuyEggs>, amount: u64) -> Result<()> {
-        buy_eggs_handle(ctx, amount)
+    pub fn buy_roogs(ctx: Context<BuyRoogs>, amount: u64) -> Result<()> {
+        buy_roogs_handle(ctx, amount)
     }
 
-    pub fn sell_eggs(ctx: Context<SellEggs>) -> Result<()> {
-        sell_eggs_handle(ctx)
+    pub fn sell_roogs(ctx: Context<SellRoogs>) -> Result<()> {
+        sell_roogs_handle(ctx)
     }
 
-    pub fn hatch_eggs(ctx: Context<HatchEggs>) -> Result<()> {
-        hatch_eggs_handle(ctx)
+    pub fn hatch_roogs(ctx: Context<HatchRoogs>) -> Result<()> {
+        hatch_roogs_handle(ctx)
     }
 }
